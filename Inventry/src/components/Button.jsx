@@ -1,30 +1,31 @@
 export default function Button({
-    variant="primary",
-    size="md",
-    loading=false,
+    variant = "primary",
+    size = "md",
+    loading = false,
+    className = "",
     children,
     ...rest
 }) {
-    const base = "inline-flex items-center justify-center rounded-lg font-semibold transition focus:outline-none focus:ring-2 focus:ring-moss-500/20 disabled:cursor-not-allowed disabled:opacity-50";
+    const base = "inline-flex items-center justify-center gap-2 rounded-[10px] font-semibold transition focus:outline-none focus:ring-2 focus:ring-brand-600/30 disabled:cursor-not-allowed disabled:opacity-60";
     const variants = {
-        primary: "bg-moss-600 text-white hover:bg-moss-700 shadow-sm",
-        outline: "border border-line bg-white text-ink hover:bg-ink/5 shadow-sm hover:border-moss-500 hover:text-moss-700",
+        primary: "bg-brand-600 text-white hover:bg-brand-700 shadow-[0px_6px_14px_0px_rgba(70,80,198,0.16)]",
+        outline: "border border-line bg-white text-ink hover:bg-ink/5 shadow-sm hover:border-brand-600 hover:text-brand-700",
         ghost: "text-ink hover:bg-ink/5",
     };
-    const sizes ={
+    const sizes = {
         sm: "px-3 py-2 text-sm",
         md: "px-4 py-2 text-sm",
-        lg: "px-5 py-2.5 text-base",
+        lg: "h-14 px-5 text-[15px]",
     };
-    return(
+    return (
         <button
-            className={`${base} ${variants[variant]} ${sizes[size]}`}
+            className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
             disabled={loading}
             {...rest}>
-                {loading && (
-                    <span className="h-3.5 w-3.5 rounded-full border-2 border-t-white border-moss-500/20 animate-spin" />
-                )}
-                {children}
+            {loading && (
+                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            )}
+            {children}
         </button>
     );
 }
