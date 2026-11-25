@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import brandingBg from '../assets/login/branding-bg.jpg';
 import orbit1 from '../assets/login/orbit-1.svg';
@@ -77,7 +78,11 @@ function BrandingPanel() {
     );
 }
 
-export default function AuthLayout({title, description, compact = false, children}) {
+export default function AuthLayout({pageTitle, title, description, compact = false, children}) {
+    useEffect(() => {
+        document.title = `UniStock · ${pageTitle}`;
+    }, [pageTitle]);
+
     return (
         <div className="flex min-h-screen bg-brand-50 font-sans text-ink">
             <BrandingPanel />

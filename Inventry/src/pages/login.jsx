@@ -35,13 +35,17 @@ export default function Login() {
         e.preventDefault();
         const next = validate();
         setError(next);
-        if (Object.keys(next).length > 0) return;
+        if (Object.keys(next).length > 0) {
+            setStatus("idle");
+            return;
+        }
         setStatus("submitting");
         setTimeout(() => setStatus("blocked"), 900);
     }
 
     return (
         <AuthLayout
+            pageTitle="Login"
             title="Welcome Back!"
             description="Sign in to access your inventory management dashboard."
         >

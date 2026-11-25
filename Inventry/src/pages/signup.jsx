@@ -45,13 +45,17 @@ export default function Signup() {
         e.preventDefault();
         const next = validate();
         setError(next);
-        if (Object.keys(next).length > 0) return;
+        if (Object.keys(next).length > 0) {
+            setStatus("idle");
+            return;
+        }
         setStatus("submitting");
         setTimeout(() => setStatus("done"), 900);
     }
 
     return (
         <AuthLayout
+            pageTitle="Sign up"
             compact
             title="Create your account"
             description="Join UniStock to manage your university’s resources."
