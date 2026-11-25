@@ -1,13 +1,14 @@
-export default function Input({label, error, hint, icon, trailing, id, className = "", ...rest}) {
+export default function Input({label, error, hint, icon, trailing, id, size = "md", className = "", ...rest}) {
     const inputId = id || rest.name;
+    const compact = size === "sm";
     return (
         <div className={className}>
             {label && (
-                <label htmlFor={inputId} className="mb-[11px] block text-[13px] leading-5 font-semibold text-ink-soft">
+                <label htmlFor={inputId} className={`${compact ? "mb-2" : "mb-[11px]"} block text-[13px] leading-5 font-semibold text-ink-soft`}>
                     {label}
                 </label>
             )}
-            <div className={`flex h-[58px] items-center gap-3 rounded-[10px] border bg-white px-[17px] transition
+            <div className={`flex ${compact ? "h-[54px]" : "h-[58px]"} items-center gap-3 rounded-[10px] border bg-white px-[17px] transition
                 focus-within:border-brand-600 focus-within:ring-2 focus-within:ring-brand-600/20
                 ${error ? "border-clay" : "border-line"}`}>
                 {icon && <img src={icon} alt="" width="20" height="20" className="shrink-0" />}

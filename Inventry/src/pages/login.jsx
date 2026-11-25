@@ -1,86 +1,11 @@
 import {useState} from 'react';
 import {Link} from 'react-router-dom';
+import AuthLayout, {AuthPrompt, EMAIL_PATTERN} from '../components/AuthLayout';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import brandingBg from '../assets/login/branding-bg.jpg';
-import orbit1 from '../assets/login/orbit-1.svg';
-import orbit2 from '../assets/login/orbit-2.svg';
-import orbit3 from '../assets/login/orbit-3.svg';
-import graduationCap from '../assets/login/graduation-cap.svg';
-import assetManagementIcon from '../assets/login/asset-management.svg';
-import inventoryTrackingIcon from '../assets/login/inventory-tracking.svg';
-import resourceAllocationIcon from '../assets/login/resource-allocation.svg';
+import PasswordInput from '../components/PasswordInput';
 import mailIcon from '../assets/login/mail.svg';
-import lockIcon from '../assets/login/lock.svg';
-import eyeIcon from '../assets/login/eye.svg';
 import arrowRightIcon from '../assets/login/arrow-right.svg';
-import shieldIcon from '../assets/login/shield.svg';
-
-const features = [
-    {icon: assetManagementIcon, label: 'Centralized Asset Management'},
-    {icon: inventoryTrackingIcon, label: 'Real-Time Inventory Tracking'},
-    {icon: resourceAllocationIcon, label: 'Efficient Resource Allocation'},
-];
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const orbits = [
-    {src: orbit1, size: 520},
-    {src: orbit2, size: 406},
-    {src: orbit3, size: 292},
-];
-
-function BrandingPanel() {
-    return (
-        <aside className="relative hidden w-[45%] shrink-0 overflow-hidden lg:flex lg:flex-col bg-[linear-gradient(122deg,var(--color-navy-900)_10%,var(--color-navy-700)_79%)] px-16 pt-[60px] pb-[71px] text-white">
-            <img src={brandingBg} alt="" className="pointer-events-none absolute inset-0 size-full object-cover opacity-30" />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-900/50 to-[rgba(38,38,102,0.05)]" />
-            <div className="pointer-events-none absolute right-[33px] bottom-[49px]">
-                {orbits.map(({src, size}) => (
-                    <img key={size} src={src} alt="" width={size} height={size}
-                        className="absolute max-w-none -translate-x-1/2 -translate-y-1/2" />
-                ))}
-            </div>
-
-            <div className="relative flex flex-1 flex-col">
-                <div className="flex items-center gap-3.5">
-                    <div className="flex size-[52px] items-center justify-center rounded-[15px] border border-white/13 bg-white/9">
-                        <img src={graduationCap} alt="" width="30" height="30" />
-                    </div>
-                    <div>
-                        <p className="text-[28px] leading-[34px] font-semibold">UniStock</p>
-                        <p className="mt-[3px] text-xs text-[#bcc5e4]">University Inventory Management System</p>
-                    </div>
-                </div>
-
-                <div className="mt-[82px] h-[3px] w-10 rounded-full bg-brand-300" />
-                <h2 className="mt-8 max-w-[535px] text-[42px] leading-[53px] font-semibold">
-                    Smart Inventory<br />Management for<br />Modern Universities.
-                </h2>
-                <p className="mt-[29px] max-w-[466px] text-base leading-[27px] text-[#bdc8e4]">
-                    A centralized platform to manage university assets, equipment, furniture, and resources efficiently.
-                </p>
-
-                <ul className="mt-[81px] space-y-6">
-                    {features.map(({icon, label}) => (
-                        <li key={label} className="flex items-center gap-4">
-                            <span className="flex size-[42px] items-center justify-center rounded-xl bg-white/6">
-                                <img src={icon} alt="" width="22" height="22" />
-                            </span>
-                            <span className="text-[15px] leading-[22px] font-medium text-[#edf0ff]">{label}</span>
-                        </li>
-                    ))}
-                </ul>
-
-                <div className="mt-auto max-w-[520px] border-t border-white/12 pt-[26px]">
-                    <p className="text-[10px] leading-4 font-medium tracking-[1.4px] text-[#a6b3d4]">
-                        PURPOSE-BUILT FOR HIGHER EDUCATION
-                    </p>
-                </div>
-            </div>
-        </aside>
-    );
-}
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -90,7 +15,6 @@ export default function Login() {
     });
     const [error, setError] = useState({});
     const [status, setStatus] = useState("idle");
-    const [showPassword, setShowPassword] = useState(false);
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
@@ -117,111 +41,65 @@ export default function Login() {
     }
 
     return (
-        <div className="flex min-h-screen bg-brand-50 font-sans text-ink">
-            <BrandingPanel />
+        <AuthLayout
+            title="Welcome Back!"
+            description="Sign in to access your inventory management dashboard."
+        >
+            <form onSubmit={handleSubmit} className="mt-11" noValidate>
+                <Input
+                    label="Email Address"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="Enter your university email address"
+                    icon={mailIcon}
+                    value={formData.email}
+                    onChange={handleChange}
+                    error={error.email}
+                />
+                <PasswordInput
+                    className="mt-6"
+                    label="Password"
+                    name="password"
+                    autoComplete="current-password"
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    error={error.password}
+                />
 
-            <main className="flex flex-1 flex-col px-6 pt-[68px] pb-[31px] sm:px-[57px]">
-                <p className="text-right text-[13px] leading-5 text-[#7a8497] sm:pr-8">
-                    Need assistance?{' '}
-                    <Link to="/support" className="font-semibold text-brand-700 hover:underline">
-                        Contact support
+                <div className="mt-6 flex items-center justify-between">
+                    <label className="flex cursor-pointer items-center gap-2.5 text-[13px] leading-5 text-[#647088]">
+                        <input
+                            type="checkbox"
+                            name="remember"
+                            checked={formData.remember}
+                            onChange={handleChange}
+                            className="size-[17px] cursor-pointer rounded-[4px] border-[#ced5e2] accent-brand-600"
+                        />
+                        Remember me
+                    </label>
+                    <Link to="/forgot-password" className="text-[13px] leading-5 font-semibold text-brand-600 hover:underline">
+                        Forgot password?
                     </Link>
-                </p>
-
-                <div className="flex flex-1 flex-col items-center justify-center pt-16 pb-12 lg:pb-0">
-                    <div className="w-full max-w-[440px]">
-                        <p className="text-[10px] leading-4 font-semibold tracking-[1.5px] text-brand-500">
-                            YOUR CAMPUS. CONNECTED.
-                        </p>
-                        <h1 className="mt-[19px] text-[34px] leading-[44px] font-semibold">Welcome Back!</h1>
-                        <p className="mt-3 text-[15px] leading-6 text-muted">
-                            Sign in to access your inventory management dashboard.
-                        </p>
-
-                        <form onSubmit={handleSubmit} className="mt-11" noValidate>
-                            <Input
-                                label="Email Address"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                placeholder="Enter your university email address"
-                                icon={mailIcon}
-                                value={formData.email}
-                                onChange={handleChange}
-                                error={error.email}
-                            />
-                            <Input
-                                className="mt-6"
-                                label="Password"
-                                name="password"
-                                type={showPassword ? "text" : "password"}
-                                autoComplete="current-password"
-                                placeholder="Enter your password"
-                                icon={lockIcon}
-                                value={formData.password}
-                                onChange={handleChange}
-                                error={error.password}
-                                trailing={
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        aria-label={showPassword ? "Hide password" : "Show password"}
-                                        aria-pressed={showPassword}
-                                        className={`shrink-0 rounded transition ${showPassword ? "opacity-100" : "opacity-80 hover:opacity-100"}`}
-                                    >
-                                        <img src={eyeIcon} alt="" width="20" height="20" />
-                                    </button>
-                                }
-                            />
-
-                            <div className="mt-6 flex items-center justify-between">
-                                <label className="flex cursor-pointer items-center gap-2.5 text-[13px] leading-5 text-[#647088]">
-                                    <input
-                                        type="checkbox"
-                                        name="remember"
-                                        checked={formData.remember}
-                                        onChange={handleChange}
-                                        className="size-[17px] cursor-pointer rounded-[4px] border-[#ced5e2] accent-brand-600"
-                                    />
-                                    Remember me
-                                </label>
-                                <Link to="/forgot-password" className="text-[13px] leading-5 font-semibold text-brand-600 hover:underline">
-                                    Forgot password?
-                                </Link>
-                            </div>
-
-                            <Button type="submit" size="lg" className="relative mt-8 w-full" loading={status === "submitting"}>
-                                {status === "submitting" ? "Signing in" : "Sign in"}
-                                {status !== "submitting" && (
-                                    <img src={arrowRightIcon} alt="" width="20" height="20" className="absolute right-5" />
-                                )}
-                            </Button>
-                        </form>
-
-                        {status === "blocked" && (
-                            <div className="mt-5 rounded-[10px] border border-line bg-white px-4 py-3 text-sm text-muted">
-                                For now, skip ahead and{' '}
-                                <Link to="/dashboard" className="font-semibold text-brand-600 hover:underline">explore the app</Link>
-                            </div>
-                        )}
-
-                        <p className="mt-[34px] text-center text-[13px] leading-5 text-[#7a8497]">
-                            Don’t have an account?{' '}
-                            <Link to="/signup" className="ml-1 font-semibold text-brand-600 hover:underline">
-                                Request access
-                            </Link>
-                        </p>
-                    </div>
                 </div>
 
-                <div className="flex flex-col items-center gap-[26px] text-[11px] leading-[18px]">
-                    <p className="flex items-center gap-[7px] text-[#8791a5]">
-                        <img src={shieldIcon} alt="" width="16" height="16" />
-                        Secure access for authorized university staff
-                    </p>
-                    <p className="text-[#98a1b3]">© 2026 UniStock. All rights reserved.</p>
+                <Button type="submit" size="lg" className="relative mt-8 w-full" loading={status === "submitting"}>
+                    {status === "submitting" ? "Signing in" : "Sign in"}
+                    {status !== "submitting" && (
+                        <img src={arrowRightIcon} alt="" width="20" height="20" className="absolute right-5" />
+                    )}
+                </Button>
+            </form>
+
+            {status === "blocked" && (
+                <div className="mt-5 rounded-[10px] border border-line bg-white px-4 py-3 text-sm text-muted">
+                    For now, skip ahead and{' '}
+                    <Link to="/dashboard" className="font-semibold text-brand-600 hover:underline">explore the app</Link>
                 </div>
-            </main>
-        </div>
+            )}
+
+            <AuthPrompt className="mt-[34px]" question="Don’t have an account?" to="/signup" linkText="Request access" />
+        </AuthLayout>
     );
 }
