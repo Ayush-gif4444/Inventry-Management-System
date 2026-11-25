@@ -22,6 +22,8 @@ const features = [
     {icon: resourceAllocationIcon, label: 'Efficient Resource Allocation'},
 ];
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const orbits = [
     {src: orbit1, size: 520},
     {src: orbit2, size: 406},
@@ -98,7 +100,7 @@ export default function Login() {
 
     function validate() {
         const next = {};
-        if (!formData.email.includes('@'))
+        if (!EMAIL_PATTERN.test(formData.email.trim()))
             next.email = "Email doesn't look valid";
         if (formData.password.length < 8)
             next.password = "Password must be at least 8 characters";
